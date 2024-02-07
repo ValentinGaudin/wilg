@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class ProductionSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Seed the application's production database.
      */
     public function run(): void
     {
-        $this->call([
+        $this->callOnce([
             PlanSeeder::class,
         ]);
     }
