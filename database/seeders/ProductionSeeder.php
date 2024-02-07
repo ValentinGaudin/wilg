@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class ProductionSeeder extends Seeder
+final class ProductionSeeder extends Seeder
 {
     /**
      * Seed the application's production database.

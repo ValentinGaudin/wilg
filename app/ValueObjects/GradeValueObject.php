@@ -45,7 +45,7 @@ final class GradeValueObject implements JsonSerializable
             number: $value,
             precision: 2,
             maxPrecision: 4,
-            locale:App::getLocale()
+            locale: App::getLocale()
         ) ?: '0%';
     }
 
