@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ValueObjects\GradeValueObject;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
 
 final class GradeController extends Controller
@@ -10,7 +11,7 @@ final class GradeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $grades = (array) Config::get('grades.grades');
 
@@ -35,11 +36,13 @@ final class GradeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $gradeName)
+    public function show(string $gradeName): JsonResponse
     {
-        $grade = (array) Config::get("grades.grades.$gradeName");
+        $grade = Config::get("grades.grades.$gradeName");
 
-        abort_if(!$grade, 404, 'Grade not found');
+        abort_if(! $grade, 404, 'Grade not found');
+
+        $grade = is_array($grade) ? $grade : (array) $grade;
 
         $grade = new GradeValueObject(
             title: $grade['title'],
