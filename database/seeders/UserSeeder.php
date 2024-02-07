@@ -7,14 +7,14 @@ use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+final class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (!Plan::query()->count()) {
+        if (! Plan::query()->count()) {
             return;
         }
 
@@ -36,8 +36,8 @@ class UserSeeder extends Seeder
                 ->for($plan)
                 ->state(fn ($attributes) => [
                     'token_balance' => match (true) {
-                        $case->value === PlanEnum::SMART->value => fake()->numberBetween(10000, 19999),
-                        $case->value === PlanEnum::START->value => fake()->numberBetween(20000, 100000),
+                        $case->value === PlanEnum::START->value => fake()->numberBetween(10000, 19999),
+                        $case->value === PlanEnum::PREMIUM->value => fake()->numberBetween(20000, 100000),
                         default => fake()->numberBetween(5000, 9999),
                     },
                 ])
