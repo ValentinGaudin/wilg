@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Grades;
 
+use App\Http\Controllers\Controller;
 use App\ValueObjects\GradeValueObject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
-final class GradeController extends Controller
+final class GradeDetailController extends Controller
 {
     /**
      * Handle the incoming request.
      */
     public function __invoke(Request $request, string $gradeName): JsonResponse
     {
-        $gradesConfig = (array) Config::get('grades.grades_list');
+        $gradesConfig = (array) Config::get('grades.grades');
 
         abort_if(! isset($gradesConfig[$gradeName]), 404, 'Grade not found');
 
