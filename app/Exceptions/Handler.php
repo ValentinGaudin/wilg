@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +27,28 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e): Response
+    {
+        $response = parent::render($request, $e);
+
+        if (
+            $request->wantsJson() &&
+            in_array($response->getStatusCode(), [500, 503, 404, 403])
+        ) {
+            return response()->json(
+                data: [
+                    'message' => $e->getMessage(),
+                ],
+                status: $response->getStatusCode()
+            );
+        } elseif ($response->getStatusCode() === 419) {
+            return back()->with([
+                'message' => 'The page expired, please try again.',
+            ]);
+        }
+
+        return $response;
     }
 }
