@@ -13,7 +13,7 @@ final class GradeValueObject implements JsonSerializable
      * @param array<string, array<string, bool|float>> $accessCondition
      * @param array<string, array<string, string>>     $advantages
      */
-    public function __construct(public string $description, public array $accessCondition, public array $advantages)
+    public function __construct(public string $title, public string $description, public array $accessCondition, public array $advantages)
     {
         $this->advantages = $this->convertAdvantagesToPercentage($advantages);
     }
@@ -34,8 +34,6 @@ final class GradeValueObject implements JsonSerializable
             $convertedAdvantages[$key] = $convertedValue;
         }
 
-        ray($convertedAdvantages);
-
         return $convertedAdvantages;
     }
 
@@ -50,16 +48,22 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     * @return array{description: string, access_condition: array<array<bool|float>>, advantages: array<array<string>>}
+     * @return array{title: string, description: string, access_condition: array<array<bool|float>>, advantages: array<array<string>>}
      */
     #[Override]
     public function jsonSerialize(): array
     {
         return [
+            'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'access_condition' => $this->getAccessCondition(),
             'advantages' => $this->getAdvantages(),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 
     public function getDescription(): string

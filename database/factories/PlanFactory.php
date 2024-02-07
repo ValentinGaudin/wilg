@@ -29,7 +29,7 @@ final class PlanFactory extends Factory
     public function startPlan(): PlanFactory
     {
         return $this->state(fn (array $attributes) => [
-            'name' => PlanEnum::START->value,
+            'name' => Str::upper(PlanEnum::START->value),
             'slug' => Str::slug(PlanEnum::START->value),
             'level' => 1,
             'price' => 0,
@@ -43,7 +43,7 @@ final class PlanFactory extends Factory
     public function smartPlan(): PlanFactory
     {
         return $this->state(fn (array $attributes) => [
-            'name' => PlanEnum::SMART->value,
+            'name' => Str::upper(PlanEnum::SMART->value),
             'slug' => Str::slug(PlanEnum::SMART->value),
             'level' => 2,
             'price' => 4.99,
@@ -57,7 +57,7 @@ final class PlanFactory extends Factory
     public function premiumPlan(): PlanFactory
     {
         return $this->state(fn (array $attributes) => [
-            'name' => PlanEnum::PREMIUM->value,
+            'name' => Str::upper(PlanEnum::PREMIUM->value),
             'slug' => Str::slug(PlanEnum::PREMIUM->value),
             'level' => 3,
             'price' => 12.99,

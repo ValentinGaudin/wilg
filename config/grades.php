@@ -21,8 +21,9 @@ return [
     |
     |
     */
-    'grades_list' => [
+    'grades' => [
         'free' => [
+            'title' => 'Grade 0',
             'description' => 'Free grade',
             'access_condition' => [
                 'plan' => [
@@ -49,6 +50,7 @@ return [
             ],
         ],
         'one' => [
+            'title' => 'Grade 1',
             'description' => 'First grade',
             'access_condition' => [
                 'plan' => [
@@ -75,6 +77,7 @@ return [
             ],
         ],
         'two' => [
+            'title' => 'Grade 2',
             'description' => 'Second grade',
             'access_condition' => [
                 'plan' => [
@@ -99,7 +102,8 @@ return [
             ],
         ],
         'three' => [
-            'description' => 'Second grade',
+            'title' => 'Grade 3',
+            'description' => 'Third grade',
             'access_condition' => [
                 'plan' => [
                     PlanEnum::START->value => false,

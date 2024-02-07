@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum PlanEnum: string
 {
-    case START = 'START';
+    case START = 'start';
 
-    case SMART = 'SMART';
+    case SMART = 'smart';
 
-    case PREMIUM = 'PREMIUM';
+    case PREMIUM = 'premium';
 }

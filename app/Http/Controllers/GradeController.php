@@ -4,26 +4,51 @@ namespace App\Http\Controllers;
 
 use App\ValueObjects\GradeValueObject;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
 final class GradeController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Display a listing of the resource.
      */
-    public function __invoke(Request $request, string $gradeName): JsonResponse
+    public function index(): JsonResponse
     {
-        $gradesConfig = (array) Config::get('grades.grades_list');
+        $grades = (array) Config::get('grades.grades');
 
-        abort_if(! isset($gradesConfig[$gradeName]), 404, 'Grade not found');
+        abort_if(empty($grades), 404, 'Empty grades list');
 
-        $gradeConfig = is_array($gradesConfig[$gradeName]) ? $gradesConfig[$gradeName] : (array) $gradesConfig[$gradeName];
+        $gradesCollection = [];
+
+        foreach ($grades as $grade) {
+            $grade = is_array($grade) ? $grade : (array) $grade;
+
+            $gradesCollection[] = new GradeValueObject(
+                title: $grade['title'],
+                description: $grade['description'],
+                accessCondition: $grade['access_condition'],
+                advantages: $grade['advantages']
+            );
+        }
+
+        return response()->json($gradesCollection);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $gradeName): JsonResponse
+    {
+        $grade = Config::get("grades.grades.$gradeName");
+
+        abort_if(! $grade, 404, 'Grade not found');
+
+        $grade = is_array($grade) ? $grade : (array) $grade;
 
         $grade = new GradeValueObject(
-            description: $gradeConfig['description'],
-            accessCondition: $gradeConfig['access_condition'],
-            advantages: $gradeConfig['advantages']
+            title: $grade['title'],
+            description: $grade['description'],
+            accessCondition: $grade['access_condition'],
+            advantages: $grade['advantages']
         );
 
         return response()->json($grade);
