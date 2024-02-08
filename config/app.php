@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Providers\FortifyServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -177,7 +178,7 @@ return [
     |
     | This array of class aliases will be registered when this application
     | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
+    | the aliases are "lazy" loaded, so they don't hinder performance.
     |
     */
 
