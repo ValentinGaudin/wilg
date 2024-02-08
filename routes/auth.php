@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+
+/*
+|--------------------------------------------------------------------------
+| AUTH Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register Auth routes for your application. These
+| routes are loaded in the api.php routes files and all of them will
+| be assigned to the "api" middleware group.
+|
+*/
+
+$limiter = config('fortify.limiters.login');
+
+Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->middleware('guest:'.Config::get('fortify.guard'));
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+//    ->middleware(array_filter([
+//        'guest:'.config('fortify.guard'),
+//        $limiter ? 'throttle:'.$limiter : null,
+//    ]));
+
+Route::middleware('auth:sanctum')
+    ->prefix('auth')
+    ->group(static function (): void {
+
+        Route::get('/me', function (Request $request) {
+            ray($request);
+
+            return $request->user();
+        });
+
+        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
+    });
