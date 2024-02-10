@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\GradeController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,11 +16,3 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/grades', [GradeController::class, 'index']);
 Route::get('/grades/{grade}', [GradeController::class, 'show']);
-
-Route::middleware('auth:sanctum')
-    ->group(static function (): void {
-
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
-    });
