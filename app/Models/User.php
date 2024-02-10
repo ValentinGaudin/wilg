@@ -51,7 +51,7 @@ final class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'full_name'
+        'full_name',
     ];
 
     /**
@@ -67,6 +67,6 @@ final class User extends Authenticatable implements MustVerifyEmail
      */
     public function fullName(): Attribute
     {
-        return Attribute::get(fn () => Str::upper($this->lastname) . ' ' . Str::title($this->firstname));
+        return Attribute::get(fn () => Str::upper($this->lastname).' '.Str::title($this->firstname));
     }
 }

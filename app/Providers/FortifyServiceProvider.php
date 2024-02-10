@@ -6,9 +6,9 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Responses\LoginResponse as AppLoginResponse;
-use App\Responses\LogoutResponse as AppLogoutResponse;
-use App\Responses\RegisterResponse as AppRegisterResponse;
+use App\Http\Responses\LoginResponse as AppLoginResponse;
+use App\Http\Responses\LogoutResponse as AppLogoutResponse;
+use App\Http\Responses\RegisterResponse as AppRegisterResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -42,7 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->string(Fortify::username())->toString()).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

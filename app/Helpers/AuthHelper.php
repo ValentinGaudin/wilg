@@ -11,9 +11,9 @@ final class AuthHelper
     {
         $user = Auth::guard('sanctum')->user();
 
-        abort_if(boolean: !$user, code: 401);
+        abort_if(boolean: ! $user, code: 401);
 
-        abort_if(boolean: !$user instanceof User, code: 401);
+        abort_if(boolean: ! $user instanceof User, code: 401);
 
         return $user;
     }

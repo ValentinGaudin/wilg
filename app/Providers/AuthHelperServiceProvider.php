@@ -13,7 +13,7 @@ class AuthHelperServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('AuthHelper', function () {
-            return new AuthHelper();
+            return new AuthHelper;
         });
     }
 

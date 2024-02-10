@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Responses;
+namespace App\Http\Responses;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +18,6 @@ final class LogoutResponse implements \Laravel\Fortify\Contracts\LogoutResponse
     {
         return $request->wantsJson()
             ? response()->json(['message' => 'Successfully logged out'])
-            : redirect([Fortify::redirects('logout', '/')]);
+            : redirect(Fortify::redirects('logout', '/'));
     }
 }
