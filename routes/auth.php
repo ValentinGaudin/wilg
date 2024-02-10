@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -32,11 +32,7 @@ Route::middleware('auth:sanctum')
     ->prefix('auth')
     ->group(static function (): void {
 
-        Route::get('/me', function (Request $request) {
-            ray($request);
-
-            return $request->user();
-        });
+        Route::get('/me', [UserController::class, 'show']);
 
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
