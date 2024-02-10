@@ -18,7 +18,6 @@ final class LoginResponse implements \Laravel\Fortify\Contracts\LoginResponse
     public function toResponse($request): JsonResponse|Response|RedirectResponse
     {
         if ($request->wantsJson()) {
-            ray($this);
             $user = User::query()->where('email', $request->string('email'))->first();
 
             abort_if(! $user, 404, 'No user found');
