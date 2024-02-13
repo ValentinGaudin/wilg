@@ -38,6 +38,8 @@ final readonly class AuthHelperService
     }
 
     /**
+     * Compare the data of the user and the rules of the grade.
+     *
      * @param array{
      *       title: string,
      *       description: string,

@@ -161,7 +161,7 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     * Return the amount of cashback for the current user and plan
+     * Retrieve the amount of cashback for the current user and plan
      */
     public function getCashBackForCurrentPlan(Plan $plan): string
     {
@@ -169,13 +169,16 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     *  Return the amount of efficiency for the current user and plan
+     *  Retrieve the amount of efficiency for the current user and plan
      */
     public function getEfficiencyForCurrentPlan(Plan $plan): string
     {
         return $this->advantages[GradeEnum::ADVANTAGES_EFFICIENCY->value][$plan->slug];
     }
 
+    /**
+     * Construct the advantages of the current grade
+     */
     private function constructAdvantages(): void
     {
         $this->advantages[GradeEnum::ADVANTAGES_CASHBACK->value] = array_combine(
