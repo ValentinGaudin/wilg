@@ -18,6 +18,7 @@ final class GradeValueObject implements JsonSerializable
     public function __construct(public string $title, public string $description, public array $accessCondition, public array $advantages)
     {
         $this->advantages = $this->convertAdvantagesToPercentage($advantages);
+        $this->constructAdvantages();
     }
 
     /**
@@ -160,32 +161,39 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
+     * Return the amount of cashback for the current user and plan
+     *
      * @param Plan $plan
      *
      * @return string
      */
-    public function getCashBackForPlan(Plan $plan): string
+    public function getCashBackForCurrentPlan(Plan $plan): string
     {
-        $cashbackValues = $this->advantages[GradeEnum::ADVANTAGES_CASHBACK->value];
-        $cashbackKeys = $this->getPlan();
-
-        $cashback = array_combine($cashbackKeys, $cashbackValues);
-
-        return $cashback[$plan->slug];
+        return $this->advantages[GradeEnum::ADVANTAGES_CASHBACK->value][$plan->slug];
     }
 
     /**
+     *  Return the amount of efficiency for the current user and plan
+ *
      * @param Plan $plan
      *
      * @return string
      */
-    public function getEfficiencyForPlan(Plan $plan): string
+    public function getEfficiencyForCurrentPlan(Plan $plan): string
     {
-        $efficiencyValues = $this->advantages[GradeEnum::ADVANTAGES_EFFICIENCY->value];
-        $efficiencyKeys = $this->getPlan();
+        return $this->advantages[GradeEnum::ADVANTAGES_EFFICIENCY->value][$plan->slug];
+    }
 
-        $efficiencies = array_combine($efficiencyKeys, $efficiencyValues);
+    private function constructAdvantages(): void
+    {
+        $this->advantages[GradeEnum::ADVANTAGES_CASHBACK->value] = array_combine(
+            $this->getPlan(),
+            $this->advantages[GradeEnum::ADVANTAGES_CASHBACK->value]
+        );
 
-        return $efficiencies[$plan->slug];
+        $this->advantages[GradeEnum::ADVANTAGES_EFFICIENCY->value] = array_combine(
+            $this->getPlan(),
+            $this->advantages[GradeEnum::ADVANTAGES_EFFICIENCY->value
+        ]);
     }
 }

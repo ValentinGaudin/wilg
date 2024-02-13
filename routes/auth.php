@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashbackController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
@@ -23,16 +24,14 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest:'.Config::get('fortify.guard'));
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-//    ->middleware(array_filter([
-//        'guest:'.config('fortify.guard'),
-//        $limiter ? 'throttle:'.$limiter : null,
-//    ]));
 
 Route::middleware('auth:sanctum')
     ->prefix('auth')
     ->group(static function (): void {
 
         Route::get('/me', [UserController::class, 'show']);
+
+        Route::get('/cashback', [CashbackController::class, 'show']);
 
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');

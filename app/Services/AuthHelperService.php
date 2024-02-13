@@ -27,14 +27,13 @@ final readonly class AuthHelperService
     {
     }
 
-    public function grade(): string|GradeValueObject
+    public function grade(): GradeValueObject
     {
         return match (true) {
-            $this->isFreeGrade() => GradeValueObject::make(...$this->configuration['free']),
+            default => GradeValueObject::make(...$this->configuration['free']),
             $this->isFirstGrade() => GradeValueObject::make(...$this->configuration['first']),
             $this->isSecondGrade() => GradeValueObject::make(...$this->configuration['second']),
             $this->isThirdGrade() => GradeValueObject::make(...$this->configuration['third']),
-            default => 'No grade currently available',
         };
     }
 
@@ -61,8 +60,8 @@ final readonly class AuthHelperService
         $maxTokenAccess = $grade->getMaxToken();
 
         $validator = Validator::make([
-            'user_plan' => $this->user()->plan?->slug,
-            'user_token' => 1,
+            'user_plan' => $this->user()->plan->slug,
+            'user_token' => $this->user()->token_balance,
         ], [
             'user_plan' => [
                 'required',
@@ -91,11 +90,6 @@ final readonly class AuthHelperService
         abort_if(boolean: ! $user instanceof User, code: 401);
 
         return $user;
-    }
-
-    private function isFreeGrade(): bool
-    {
-        return $this->checkAccessCondition($this->configuration['free']);
     }
 
     private function isFirstGrade(): bool
