@@ -16,8 +16,6 @@ final class UserController extends Controller
     {
         $user = $authHelper->user();
 
-        ray($authHelper->grade());
-
         return response()->json(['data' => new UserResource($user)]);
     }
 }

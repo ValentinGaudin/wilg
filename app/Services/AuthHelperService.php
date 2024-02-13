@@ -10,7 +10,18 @@ use Illuminate\Support\Facades\Validator;
 final class AuthHelperService
 {
     /**
-     * @param array<string, array<string, string|array<string, array<int, string>>>> $configuration
+     * @param array<string, array{
+     *      title: string,
+     *      description: string,
+     *      access_condition: array{
+     *          plan: array<string>,
+     *          token_balance: array<string>,
+     *      },
+     *      advantages: array{
+     *          cashback: array<string>,
+     *          efficiency: array<string>,
+     *      },
+     *  }> $configuration
      */
     public function __construct(public array $configuration)
     {
@@ -27,6 +38,22 @@ final class AuthHelperService
         };
     }
 
+    /**
+     * @param array{
+     *       title: string,
+     *       description: string,
+     *       access_condition: array{
+     *           plan: array<string>,
+     *           token_balance: array<string>,
+     *       },
+     *       advantages: array{
+     *           cashback: array<string>,
+     *           efficiency: array<string>,
+     *       },
+     *   } $grade
+     *
+     * @return bool
+     */
     private function checkAccessCondition(array $grade): bool
     {
         $grade = GradeValueObject::make(...$grade);
