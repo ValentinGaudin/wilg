@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CashbackController;
+use App\Http\Controllers\EfficiencyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
@@ -30,8 +31,8 @@ Route::middleware('auth:sanctum')
     ->group(static function (): void {
 
         Route::get('/me', [UserController::class, 'show']);
-
         Route::get('/cashback', [CashbackController::class, 'show']);
+        Route::get('/efficiency', [EfficiencyController::class, 'show']);
 
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
