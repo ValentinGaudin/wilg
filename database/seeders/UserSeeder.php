@@ -18,9 +18,19 @@ final class UserSeeder extends Seeder
             return;
         }
 
+        User::factory()
+            ->count(1)
+            ->for(Plan::query()->where('slug', 'premium')->firstOrFail())
+            ->state(fn ($attributes) => [
+                'token_balance' => fake()->randomNumber(5),
+                'email'         => 'admin@wilg.com'
+            ])
+            ->create();
+
+
         foreach (PlanEnum::cases() as $case) {
             $plan = Plan::query()
-                ->where('name', $case)
+                ->where('slug', $case)
                 ->firstOrFail();
 
             User::factory()
