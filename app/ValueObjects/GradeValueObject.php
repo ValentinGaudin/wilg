@@ -161,6 +161,8 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
+     * Return the amount of cashback for the current user and plan
+     *
      * @param Plan $plan
      *
      * @return string
@@ -171,6 +173,8 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
+     *  Return the amount of efficiency for the current user and plan
+ *
      * @param Plan $plan
      *
      * @return string
