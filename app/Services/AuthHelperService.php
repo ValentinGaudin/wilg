@@ -62,7 +62,7 @@ final readonly class AuthHelperService
 
         $validator = Validator::make([
             'user_plan' => $this->user()->plan?->slug,
-            'user_token' => 1,
+            'user_token' => $this->user()->token_balance,
         ], [
             'user_plan' => [
                 'required',
