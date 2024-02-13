@@ -1,7 +1,5 @@
 <?php
 
-use App\Enums\PlanEnum;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -21,106 +19,53 @@ return [
     |
     |
     */
-    'grades' => [
+    'list' => [
         'free' => [
-            'title' => 'Grade 0',
-            'description' => 'Free grade',
+            'title' => env('FREE_GRADE_TITLE', 'Free'),
+            'description' => env('FREE_GRADE_DESCRIPTION', 'Free Grade'),
             'access_condition' => [
-                'plan' => [
-                    PlanEnum::START->value => true,
-                    PlanEnum::SMART->value => true,
-                    PlanEnum::PREMIUM->value => true,
-                ],
-                'token_balance' => [
-                    'min' => 0,
-                    'max' => 4999,
-                ],
+                'plan' => array_map('trim', array_filter(explode(',', env('ACCESS_PLAN_FREE_GRADE')))),
+                'token_balance' => array_map('trim', array_filter(explode(',', env('TOKEN_BALANCE_FREE_GRADE')))),
             ],
             'advantages' => [
-                'cashback' => [
-                    PlanEnum::START->value => 0.5,
-                    PlanEnum::SMART->value => 2.5,
-                    PlanEnum::PREMIUM->value => 4,
-                ],
-                'efficiency' => [
-                    PlanEnum::START->value => 1,
-                    PlanEnum::SMART->value => 1.5,
-                    PlanEnum::PREMIUM->value => 2,
-                ],
+                'cashback' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('CASHBACK_FREE_GRADE')))),
+                'efficiency' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('EFFICIENCY_FREE_GRADE')))),
             ],
         ],
-        'one' => [
-            'title' => 'Grade 1',
-            'description' => 'First grade',
+        'first' => [
+            'title' => env('FIRST_GRADE_TITLE', 'Grade 1'),
+            'description' => env('FIRST_GRADE_DESCRIPTION', 'First Grade'),
             'access_condition' => [
-                'plan' => [
-                    PlanEnum::START->value => true,
-                    PlanEnum::SMART->value => true,
-                    PlanEnum::PREMIUM->value => true,
-                ],
-                'token_balance' => [
-                    'min' => 5000,
-                    'max' => 9999,
-                ],
+                'plan' => array_map('trim', array_filter(explode(',', env('ACCESS_PLAN_FIRST_GRADE')))),
+                'token_balance' => array_map('trim', array_filter(explode(',', env('TOKEN_BALANCE_FIRST_GRADE')))),
             ],
             'advantages' => [
-                'cashback' => [
-                    PlanEnum::START->value => 1,
-                    PlanEnum::SMART->value => 3,
-                    PlanEnum::PREMIUM->value => 4.5,
-                ],
-                'efficiency' => [
-                    PlanEnum::START->value => 1.1,
-                    PlanEnum::SMART->value => 1.65,
-                    PlanEnum::PREMIUM->value => 2.2,
-                ],
+                'cashback' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('CASHBACK_FIRST_GRADE')))),
+                'efficiency' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('EFFICIENCY_FIRST_GRADE')))),
             ],
         ],
-        'two' => [
-            'title' => 'Grade 2',
-            'description' => 'Second grade',
+        'second' => [
+            'title' => env('SECOND_GRADE_TITLE', 'Grade 2'),
+            'description' => env('SECOND_GRADE_DESCRIPTION', 'Second Grade'),
             'access_condition' => [
-                'plan' => [
-                    PlanEnum::START->value => false,
-                    PlanEnum::SMART->value => true,
-                    PlanEnum::PREMIUM->value => true,
-                ],
-                'token_balance' => [
-                    'min' => 10000,
-                    'max' => 19999,
-                ],
+                'plan' => array_map('trim', array_filter(explode(',', env('ACCESS_PLAN_SECOND_GRADE')))),
+                'token_balance' => array_map('trim', array_filter(explode(',', env('TOKEN_BALANCE_SECOND_GRADE')))),
             ],
             'advantages' => [
-                'cashback' => [
-                    PlanEnum::SMART->value => 4,
-                    PlanEnum::PREMIUM->value => 5.5,
-                ],
-                'efficiency' => [
-                    PlanEnum::SMART->value => 1.8,
-                    PlanEnum::PREMIUM->value => 2.4,
-                ],
+                'cashback' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('CASHBACK_SECOND_GRADE')))),
+                'efficiency' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('EFFICIENCY_SECOND_GRADE')))),
             ],
         ],
-        'three' => [
-            'title' => 'Grade 3',
-            'description' => 'Third grade',
+        'third' => [
+            'title' => env('THIRD_GRADE_TITLE', 'Grade 3'),
+            'description' => env('THIRD_GRADE_DESCRIPTION', 'Third Grade'),
             'access_condition' => [
-                'plan' => [
-                    PlanEnum::START->value => false,
-                    PlanEnum::SMART->value => false,
-                    PlanEnum::PREMIUM->value => true,
-                ],
-                'token_balance' => [
-                    'min' => 20000,
-                ],
+                'plan' => array_map('trim', array_filter(explode(',', env('ACCESS_PLAN_THIRD_GRADE')))),
+                'token_balance' => array_map('trim', array_filter(explode(',', env('TOKEN_BALANCE_THIRD_GRADE')))),
             ],
             'advantages' => [
-                'cashback' => [
-                    PlanEnum::PREMIUM->value => 7,
-                ],
-                'efficiency' => [
-                    PlanEnum::PREMIUM->value => 2.8,
-                ],
+                'cashback' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('CASHBACK_THIRD_GRADE')))),
+                'efficiency' => array_map(fn ($value) => floatval(trim($value)), array_filter(explode(',', env('EFFICIENCY_THIRD_GRADE')))),
             ],
         ],
     ],
