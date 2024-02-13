@@ -13,7 +13,7 @@ final class GradeController extends Controller
      */
     public function index(): JsonResponse
     {
-        $grades = (array) Config::get('grades.grades');
+        $grades = (array) Config::get('grades.list');
 
         abort_if(empty($grades), 404, 'Empty grades list');
 
@@ -22,12 +22,7 @@ final class GradeController extends Controller
         foreach ($grades as $grade) {
             $grade = is_array($grade) ? $grade : (array) $grade;
 
-            $gradesCollection[] = new GradeValueObject(
-                title: $grade['title'],
-                description: $grade['description'],
-                accessCondition: $grade['access_condition'],
-                advantages: $grade['advantages']
-            );
+            $gradesCollection[] = GradeValueObject::make(...$grade);
         }
 
         return response()->json($gradesCollection);
@@ -38,18 +33,13 @@ final class GradeController extends Controller
      */
     public function show(string $gradeName): JsonResponse
     {
-        $grade = Config::get("grades.grades.$gradeName");
+        $grade = Config::get("grades.list.$gradeName");
 
         abort_if(! $grade, 404, 'Grade not found');
 
         $grade = is_array($grade) ? $grade : (array) $grade;
 
-        $grade = new GradeValueObject(
-            title: $grade['title'],
-            description: $grade['description'],
-            accessCondition: $grade['access_condition'],
-            advantages: $grade['advantages']
-        );
+        $grade = GradeValueObject::make(...$grade);
 
         return response()->json($grade);
     }

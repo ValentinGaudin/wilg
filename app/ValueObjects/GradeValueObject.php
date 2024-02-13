@@ -2,6 +2,8 @@
 
 namespace App\ValueObjects;
 
+use App\Enums\GradeEnum;
+use App\Models\Plan;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Number;
 use JsonSerializable;
@@ -10,12 +12,26 @@ use Override;
 final class GradeValueObject implements JsonSerializable
 {
     /**
-     * @param array<string, array<string, bool|float>> $accessCondition
-     * @param array<string, array<string, string>>     $advantages
+     * @param array<string, array<int, string>>    $accessCondition
+     * @param array<string, array<string, string>> $advantages
      */
     public function __construct(public string $title, public string $description, public array $accessCondition, public array $advantages)
     {
         $this->advantages = $this->convertAdvantagesToPercentage($advantages);
+    }
+
+    /**
+     * @param array<string, array<int, string>>    $access_condition
+     * @param array<string, array<string, string>> $advantages
+     */
+    public static function make(string $title, string $description, array $access_condition, array $advantages): self
+    {
+        return new self(
+            title: $title,
+            description: $description,
+            accessCondition: $access_condition,
+            advantages: $advantages
+        );
     }
 
     /**
@@ -48,7 +64,7 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     * @return array{title: string, description: string, access_condition: array<array<bool|float>>, advantages: array<array<string>>}
+     * @return array{title: string, description: string, access_condition: array<array<string|float>>, advantages: array<array<string>>}
      */
     #[Override]
     public function jsonSerialize(): array
@@ -72,11 +88,67 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     * @return bool[][]|float[][]
+     * @return array<string, array<int, string>>
      */
     public function getAccessCondition(): array
     {
         return $this->accessCondition;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPlan(): array
+    {
+        return $this->accessCondition[GradeEnum::ACCESS_CONDITION_PLAN->value];
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getMinToken(): ?int
+    {
+        $minString = $this->getMinMaxString('min');
+
+        return $this->extractNumericValue($minString);
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getMaxToken(): ?int
+    {
+        $maxString = $this->getMinMaxString('max');
+
+        return $this->extractNumericValue($maxString);
+    }
+
+    /**
+     * @return ?string
+     */
+    private function getMinMaxString(string $minMax): ?string
+    {
+        foreach ($this->accessCondition[GradeEnum::ACCESS_CONDITION_TOKEN->value] as $condition) {
+            if (str_contains($condition, $minMax)) {
+                return $condition;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  ?string $string
+     * @return ?int
+     */
+    private function extractNumericValue(?string $string): ?int
+    {
+        if (! $string) {
+            return null;
+        }
+        preg_match('/\d+/', $string, $matches);
+
+        return isset($matches[0]) ? (int) $matches[0] : null;
     }
 
     /**
@@ -85,5 +157,35 @@ final class GradeValueObject implements JsonSerializable
     public function getAdvantages(): array
     {
         return $this->advantages;
+    }
+
+    /**
+     * @param Plan $plan
+     *
+     * @return string
+     */
+    public function getCashBackForPlan(Plan $plan): string
+    {
+        $cashbackValues = $this->advantages[GradeEnum::ADVANTAGES_CASHBACK->value];
+        $cashbackKeys = $this->getPlan();
+
+        $cashback = array_combine($cashbackKeys, $cashbackValues);
+
+        return $cashback[$plan->slug];
+    }
+
+    /**
+     * @param Plan $plan
+     *
+     * @return string
+     */
+    public function getEfficiencyForPlan(Plan $plan): string
+    {
+        $efficiencyValues = $this->advantages[GradeEnum::ADVANTAGES_EFFICIENCY->value];
+        $efficiencyKeys = $this->getPlan();
+
+        $efficiencies = array_combine($efficiencyKeys, $efficiencyValues);
+
+        return $efficiencies[$plan->slug];
     }
 }

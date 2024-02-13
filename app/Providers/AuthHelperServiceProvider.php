@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Helpers\AuthHelper;
+use App\Services\AuthHelperService;
 use Illuminate\Support\ServiceProvider;
 
 class AuthHelperServiceProvider extends ServiceProvider
@@ -12,9 +12,12 @@ class AuthHelperServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('AuthHelper', function () {
-            return new AuthHelper;
-        });
+        $configuration = config('grades.list');
+
+        $this->app->bind(
+            abstract: AuthHelperService::class,
+            concrete: fn ($app) => new AuthHelperService(is_array($configuration) ? $configuration : [])
+        );
     }
 
     /**
@@ -22,5 +25,6 @@ class AuthHelperServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //
     }
 }
