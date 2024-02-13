@@ -10,12 +10,26 @@ use Override;
 final class GradeValueObject implements JsonSerializable
 {
     /**
-     * @param array<string, array<string, bool|float>> $accessCondition
-     * @param array<string, array<string, string>>     $advantages
+     * @param array<string, array<int, string>>    $accessCondition
+     * @param array<string, array<string, string>> $advantages
      */
     public function __construct(public string $title, public string $description, public array $accessCondition, public array $advantages)
     {
         $this->advantages = $this->convertAdvantagesToPercentage($advantages);
+    }
+
+    /**
+     * @param array<string, array<int, string>>    $access_condition
+     * @param array<string, array<string, string>> $advantages
+     */
+    public static function make(string $title, string $description, array $access_condition, array $advantages): self
+    {
+        return new self(
+            $title,
+            $description,
+            $access_condition,
+            $advantages
+        );
     }
 
     /**
@@ -48,7 +62,7 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     * @return array{title: string, description: string, access_condition: array<array<bool|float>>, advantages: array<array<string>>}
+     * @return array{title: string, description: string, access_condition: array<array<string|float>>, advantages: array<array<string>>}
      */
     #[Override]
     public function jsonSerialize(): array
@@ -72,11 +86,67 @@ final class GradeValueObject implements JsonSerializable
     }
 
     /**
-     * @return bool[][]|float[][]
+     * @return array<string, array<int, string>>
      */
     public function getAccessCondition(): array
     {
         return $this->accessCondition;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPlan(): array
+    {
+        return $this->accessCondition['plan'];
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getMinToken(): ?int
+    {
+        $minString = $this->getMinMaxString('min');
+
+        return $this->extractNumericValue($minString);
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getMaxToken(): ?int
+    {
+        $maxString = $this->getMinMaxString('max');
+
+        return $this->extractNumericValue($maxString);
+    }
+
+    /**
+     * @return ?string
+     */
+    private function getMinMaxString(string $minMax): ?string
+    {
+        foreach ($this->accessCondition['token_balance'] as $condition) {
+            if (str_contains($condition, $minMax)) {
+                return $condition;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  ?string $string
+     * @return ?int
+     */
+    private function extractNumericValue(?string $string): ?int
+    {
+        if (! $string) {
+            return null;
+        }
+        preg_match('/\d+/', $string, $matches);
+
+        return isset($matches[0]) ? (int) $matches[0] : null;
     }
 
     /**
