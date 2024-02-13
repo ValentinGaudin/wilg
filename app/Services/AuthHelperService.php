@@ -7,7 +7,7 @@ use App\ValueObjects\GradeValueObject;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-final class AuthHelperService
+final readonly class AuthHelperService
 {
     /**
      * @param array<string, array{
@@ -23,7 +23,7 @@ final class AuthHelperService
      *      },
      *  }> $configuration
      */
-    public function __construct(public array $configuration)
+    public function __construct(private array $configuration)
     {
     }
 
@@ -51,8 +51,6 @@ final class AuthHelperService
      *           efficiency: array<string>,
      *       },
      *   } $grade
-     *
-     * @return bool
      */
     private function checkAccessCondition(array $grade): bool
     {
@@ -64,7 +62,7 @@ final class AuthHelperService
 
         $validator = Validator::make([
             'user_plan' => $this->user()->plan?->slug,
-            'user_token' => $this->user()->token_balance,
+            'user_token' => 1,
         ], [
             'user_plan' => [
                 'required',
