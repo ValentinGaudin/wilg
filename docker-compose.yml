@@ -1,0 +1,2 @@
+# Containers are managed inside the 'containers' folder
+# The root .env file (copied from the .env.example file) has a COMPOSE_FILE variable which determines which containers will be started/included in the docker compose commands
