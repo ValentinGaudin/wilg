@@ -54,7 +54,7 @@ Import the postman collection in your own postman; once it's done, you will be a
 Remember to fill the env with your mailtrap account.
 You will have to do this if you want to use the register route
 
-To be sure if your application is running good you can go to  :
+To be sure if your application is running good you can go to :
 
 - [Welcome](https://wilg.localhost)
 
