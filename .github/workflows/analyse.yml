@@ -26,23 +26,30 @@ jobs:
 
       - name: Install dependencies
         run: "composer install --ignore-platform-reqs"
+        working-directory: api
 
       - name: Validate composer
         run: "composer validate --strict"
+        working-directory: api
 
       - name: Up Laravel Application
         run: |
+          cd api/
           cp .env.example .env
           php artisan key:generate
 
       - name: Require Laravel Pint
         run: "composer require laravel/pint --dev --no-update --no-interaction --no-progress"
+        working-directory: api
 
       - name: Require Laravel Stan
         run: "composer require larastan/larastan:^2.0 --dev --no-update --no-interaction --no-progress"
+        working-directory: api
 
       - name: Execute linter analysis
         run: "composer run-script pint"
+        working-directory: api
 
       - name: Execute static analysis
         run: "composer run-script stan"
+        working-directory: api

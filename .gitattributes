@@ -1,11 +1,46 @@
-* text=auto eol=lf
+# These settings are for any web project
 
-*.blade.php diff=html
-*.css diff=css
-*.html diff=html
-*.md diff=markdown
-*.php diff=php
+# Handle line endings automatically for files detected as text
+# and leave all files detected as binary untouched.
+* text=auto
 
-/.github export-ignore
-CHANGELOG.md export-ignore
-.styleci.yml export-ignore
+# Force the following filetypes to have unix eols, so Windows does not break them
+**/*.* text eol=lf
+
+# Windows forced line-endings
+/.idea/* text eol=crlf
+
+#
+## These files are binary and should be left untouched
+#
+
+# (binary is a macro for -text -diff)
+api/bin/console binary
+api/bin/phpunit binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.pyc binary
+*.pdf binary
+*.ez binary
+*.bz2 binary
+*.swp binary
+*.swp binary
+*.ipa binary
+*.apk binary
+*.vpp binary
